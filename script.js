@@ -1,33 +1,35 @@
-//your JS code here. If required.
 document.getElementById("userForm").addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent the form from reloading the page
+  event.preventDefault(); // Prevent default form submission
 
   const nameInput = document.getElementById("name").value.trim();
-  const ageInput = document.getElementById("age").value;
+  const ageInput = document.getElementById("age").value.trim();
 
-  // Validation: Ensure inputs are not empty
+  // Validate inputs
   if (!nameInput || !ageInput) {
     alert("Both fields are required.");
     return;
   }
 
-  // Create a promise to handle the age validation
-  const validateAge = new Promise((resolve, reject) => {
+  // Convert age to a number
+  const age = parseInt(ageInput, 10);
+
+  // Create a promise that resolves or rejects based on age
+  const ageValidationPromise = new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (Number(ageInput) > 18) {
+      if (age > 18) {
         resolve(`Welcome, ${nameInput}. You can vote.`);
       } else {
-        reject(`Oh sorry, ${nameInput}. You aren't old enough.`);
+        reject(`Oh sorry ${nameInput}. You aren't old enough.`);
       }
-    }, 4000); // Simulate a 4-second delay
+    }, 4000); // Delay of 4 seconds
   });
 
   // Handle the promise
-  validateAge
+  ageValidationPromise
     .then((message) => {
-      alert(message);
+      alert(message); // Alert for successful promise resolution
     })
-    .catch((error) => {
-      alert(error);
+    .catch((errorMessage) => {
+      alert(errorMessage); // Alert for promise rejection
     });
 });
